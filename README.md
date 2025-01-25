@@ -2,6 +2,8 @@
 
 **For Sale**, será uma plataforma de e-commerce local que conecta compradores e vendedores em Serra Branca. Este projeto tem como objetivo facilitar o comércio local, promovendo a interação entre usuários e fomentando a economia da cidade.
 
+Este repositório se refere ao backend desta aplicação.
+
 ---
 
 ## 🚀 Funcionalidades Principais
@@ -15,10 +17,6 @@
 ---
 
 ## 🛠️ Tecnologias Utilizadas
-
-### Frontend
-- **Framework:** Angular
-- **Biblioteca de UI:** Angular Material, Bootstrap
 
 ### Backend
 - **Framework:** Node.js (NestJS)
@@ -36,17 +34,6 @@
 ---
 
 ## 📂 Estrutura do Projeto
-
-### Frontend
-```
-frontend/
-├── src/
-│   ├── app/
-│   │   ├── components/    # Componentes reutilizáveis
-│   │   ├── pages/         # Páginas principais (ex.: Home, Produto, Carrinho)
-│   │   ├── services/      # Serviços de integração com API
-│   │   └── models/        # Modelos de dados
-```
 
 ### Backend
 ```
@@ -87,12 +74,6 @@ backend/
    - Renomeie o arquivo `.env.example` para `.env`.
    - Configure as variáveis de ambiente (ex.: conexões de banco, secret JWT).
 
-3. **Configuração do Frontend:**
-   - Navegue até o diretório `frontend` e instale as dependências:
-     ```bash
-     npm install
-     ```
-
 4. **Inicie com Docker:**
    - Execute o comando:
      ```bash
@@ -100,7 +81,6 @@ backend/
      ```
 
 5. **Acesse a aplicação:**
-   - Frontend: `http://localhost:4200`
    - Backend: `http://localhost:3000`
 
 ---
