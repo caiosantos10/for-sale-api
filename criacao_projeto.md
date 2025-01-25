@@ -51,3 +51,15 @@ Para compilar nosso código, precisaremos executar o comando tsc, que irá ler o
 npx tsc
 ```
 O código compilado foi gerado na pasta build.
+
+## Instalando Express
+
+Execute o seguinte comando:
+```
+npm install express cors express-async-errors
+```
+
+Para instalação das tipagens
+```
+npm install -D @types/express @types/cors
+```
