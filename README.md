@@ -46,7 +46,7 @@ backend/
 │   │   └── messages/      # Mensagens entre usuários
 │   ├── config/            # Configurações (ex.: banco de dados, autenticação)
 │   ├── entities/          # Definições de tabelas e relacionamentos
-│   └── main.ts            # Arquivo principal do servidor
+│   └── server.ts          # Arquivo principal do servidor
 ```
 
 ### Docker
