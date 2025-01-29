@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: forsale_container
+    environment:
+      POSTGRES_USER: forsale
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: forsale
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
