@@ -12,7 +12,7 @@ const AppDataSource = new DataSource({
         "./src/modules/**/typeorm/entities/*.ts"
     ],
     migrations: [
-        "./src/shared/typeorm/migrations/*.ts"
+        "./src/migrations/*.ts"
     ],
     synchronize: true,
     logging: false,
