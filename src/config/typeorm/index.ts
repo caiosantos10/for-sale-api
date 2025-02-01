@@ -9,7 +9,7 @@ export const AppDataSource = new DataSource({
     password: "admin",
     database: "forsale",
     entities: [
-        "./src/modules/**/typeorm/entities/*.ts"
+        "./src/modules/**/entities/*.ts"
     ],
     migrations: [
         "./src/migrations/*.ts"
