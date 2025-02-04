@@ -46,10 +46,12 @@ export default class ProductController {
                 });
             }
 
+            throw error;
+
             // Caso seja um erro inesperado, retorne um erro genérico
-            return response.status(500).json({
-                message: 'Internal server error',
-            });
+            // return response.status(500).json({
+            //     message: 'Internal server error',
+            // });
         }
     }
 
@@ -77,10 +79,12 @@ export default class ProductController {
                 });
             }
 
+            throw error;
+
             // Caso seja um erro inesperado, retorne um erro genérico
-            return response.status(500).json({
-                message: 'Internal server error',
-            });
+            // return response.status(500).json({
+            //     message: 'Internal server error',
+            // });
         }
     }
 
