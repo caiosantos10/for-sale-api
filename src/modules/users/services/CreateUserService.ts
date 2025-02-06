@@ -2,6 +2,7 @@ import AppError from "src/shared/errors/AppError";
 import User from "../entities/Users";
 import UsersRepository from "../repositories/UsersRepository";
 import RoleEnum from "../shared/enums/Role.enum";
+import { hash } from "bcryptjs";
 
 interface IRequest {
     name: string;
@@ -17,11 +18,13 @@ export default class CreateUserService {
 
         if (userExists) throw new AppError('There is already one User with this email.');
 
+        const hashedPassword = await hash(password, 8);
+
         const user = UsersRepository.create({
             name,
             lastName,
             email,
-            password,
+            password: hashedPassword,
             role
         });
 
