@@ -14,6 +14,9 @@ export default class Product {
     @Column('decimal')
     price: number;
 
+    @Column()
+    image: string;
+
     @CreateDateColumn()
     created_at: Date;
 
