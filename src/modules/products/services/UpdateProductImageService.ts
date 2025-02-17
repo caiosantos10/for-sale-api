@@ -10,7 +10,7 @@ interface IRequest {
     imageFileName: string;
 }
 
-export default class UpdateImageService {
+export default class UpdateProductImageService {
     public async execute({ imageFileName, productId }: IRequest): Promise<Product> {
         const product = await ProductRepository.findOne({ where: { id: productId  } });
 

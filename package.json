@@ -7,8 +7,8 @@
     "dev": "ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules src/server.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js",
-    "migration:run": "npm run typeorm -- migration:run -d ./src/config/typeorm",
-    "migration:revert": "npm run typeorm -- migration:revert -d ./src/config/typeorm"
+    "migration:run": "ts-node-dev ./node_modules/typeorm/cli.js migration:run -d ./src/config/typeorm/index.ts",
+    "migration:revert": "ts-node-dev ./node_modules/typeorm/cli.js migration:revert -d ./src/config/typeorm"
   },
   "keywords": [],
   "author": "",
