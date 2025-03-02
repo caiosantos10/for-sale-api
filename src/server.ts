@@ -5,8 +5,12 @@ import routes from './config/routes';
 import AppError from './shared/errors/AppError';
 import './config/typeorm';
 import { errors } from 'celebrate';
+import { setupSwagger } from './swagger.config';
 
 const app = express(); 
+
+// Configuração do Swagger
+setupSwagger(app);
 
 app.use(cors());
 app.use(express.json());
