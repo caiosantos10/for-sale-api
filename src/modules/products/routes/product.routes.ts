@@ -12,7 +12,7 @@ const productImageController = new ProductImageController();
 
 const upload = multer(uploadConfig);
 
-productRouter.get('/', productController.index);
+productRouter.get('/', isAuthenticated, productController.index);
 
 productRouter.get(
     '/:id',
@@ -21,6 +21,7 @@ productRouter.get(
             id: Joi.string().uuid().required(),
         }
     }),
+    isAuthenticated,
     productController.show,
 );
 
@@ -33,6 +34,7 @@ productRouter.post(
             price: Joi.number().precision(2).required(),
         }
     }),
+    isAuthenticated,
     productController.create,
 );
 
@@ -48,6 +50,7 @@ productRouter.put(
             price: Joi.number().precision(2).required(),
         }
     }),
+    isAuthenticated,
     productController.update,
 );
 
@@ -58,6 +61,7 @@ productRouter.delete(
             id: Joi.string().uuid().required(),
         }
     }),
+    isAuthenticated,
     productController.delete,
 );
 

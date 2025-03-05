@@ -15,6 +15,7 @@ userRouter.get(
             id: Joi.string().uuid().required(),
         }
     }),
+    isAuthenticated,
     userController.show,
 );
 
@@ -46,6 +47,7 @@ userRouter.put(
             role: Joi.string().required(),
         }
     }),
+    isAuthenticated,
     userController.update,
 );
 
@@ -56,6 +58,7 @@ userRouter.delete(
             id: Joi.string().uuid().required(),
         }
     }),
+    isAuthenticated,
     userController.delete,
 );
 
