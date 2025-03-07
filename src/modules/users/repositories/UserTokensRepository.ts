@@ -8,9 +8,13 @@ const UserTokensRepository = AppDataSource.getRepository(UserTokens).extend({
     async generate(user_id: string): Promise<UserTokens | null> {
         const userToken = await this.create({ user_id });
 
-        await this.save(userToken);
-        
+        try {
+            await this.save(userToken);
+        } catch (err) {
+            console.error(err)
+        }
         return userToken;
+        
     }
 });
 

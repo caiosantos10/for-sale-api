@@ -7,7 +7,7 @@ export class CreateTableUserTokens1741140502230 implements MigrationInterface {
             CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
             CREATE TABLE IF NOT EXISTS "User_Tokens"(
-                id UUID PRIMARY KEY NOT NULL,
+                id UUID PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
                 token UUID NOT NULL DEFAULT uuid_generate_v4(),
                 user_id UUID NOT NULL,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
