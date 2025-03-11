@@ -28,5 +28,7 @@ export default class ResetPasswordService {
         }
 
         user.password = await hash(password, 8);
+        
+        UserTokensRepository.save(user);
     }
 }
