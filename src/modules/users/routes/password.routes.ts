@@ -22,7 +22,7 @@ passwordRouter.post(
         [Segments.BODY]: {
             password: Joi.string().required(),
             token: Joi.string().uuid().required(),
-            password_confirmation: Joi.string().required().valid(Joi.ref('passsword')),
+            password_confirmation: Joi.string().required().valid(Joi.ref('password')),
         }
     }),
     resetPasswordController.create,
