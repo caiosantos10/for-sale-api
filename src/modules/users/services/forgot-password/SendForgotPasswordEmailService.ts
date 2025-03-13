@@ -2,6 +2,7 @@ import AppError from "src/shared/errors/AppError";
 import UsersRepository from "../../repositories/UsersRepository";
 import UserTokensRepository from "../../repositories/UserTokensRepository";
 import { hash } from "bcryptjs";
+import { EtherealMail } from "@config/mail/EtherealMail.config";
 
 interface IRequest {
     email : string;
@@ -17,6 +18,9 @@ export default class SendForgotPasswordEmailService {
 
         const token = await UserTokensRepository.generate(user.id);
 
-        console.log(token);
+        await EtherealMail.sendEmail({
+            to: user.email,
+            body: `Solicitação de alteração de senha recebida: ${token!.token}`,
+        });
     }
 }
