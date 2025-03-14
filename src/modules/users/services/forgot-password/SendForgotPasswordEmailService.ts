@@ -3,6 +3,7 @@ import UsersRepository from "../../repositories/UsersRepository";
 import UserTokensRepository from "../../repositories/UserTokensRepository";
 import { hash } from "bcryptjs";
 import { EtherealMail } from "@config/mail/EtherealMail.config";
+import UserTokens from "@modules/users/entities/UserTokens";
 
 interface IRequest {
     email : string;
@@ -16,11 +17,21 @@ export default class SendForgotPasswordEmailService {
             throw new AppError('User does not exists.', 400);
         }
 
-        const token = await UserTokensRepository.generate(user.id);
+        const { token } = await UserTokensRepository.generate(user.id) as UserTokens;
 
         await EtherealMail.sendEmail({
-            to: user.email,
-            body: `Solicitação de alteração de senha recebida: ${token!.token}`,
+            to: {
+                name: user.name,
+                email: user.email,
+            },
+            subject: '[FOR SALE API] Recuperação de Senha',
+            templateData: {
+                template: `Olá {{name}}: {{token}}`,
+                variables: {
+                    name: user.name,
+                    token,
+                },
+            },
         });
     }
 }
