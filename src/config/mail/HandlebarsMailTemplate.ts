@@ -1,4 +1,4 @@
-import Handlebars from "handlebars";
+import handlebars from "handlebars";
 import fs from 'fs';
 
 interface ITemplateVariable {
@@ -15,7 +15,7 @@ export default class HandlebarsMailTemplate {
         const templateFileContent = await fs.promises.readFile(file, {
             encoding: 'utf-8',
         });
-        const parseTemplate = Handlebars.compile(file);
+        const parseTemplate = handlebars.compile(templateFileContent);
         return parseTemplate(variables);
     }
 }

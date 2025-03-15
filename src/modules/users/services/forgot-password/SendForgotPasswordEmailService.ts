@@ -22,6 +22,7 @@ export default class SendForgotPasswordEmailService {
         const forgotPasswordTemplate = path.resolve(
             __dirname,
             '..',
+            '..',
             'views',
             'send_forgot_email_template.hbs',
         );
