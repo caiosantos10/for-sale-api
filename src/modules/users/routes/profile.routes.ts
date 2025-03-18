@@ -25,8 +25,7 @@ profileRouter.put('/',
             .when('password', {
                 is: Joi.exist(),
                 then: Joi.required(),
-                }
-            ),
+            }),
         }
     }),
     profileController.update,
