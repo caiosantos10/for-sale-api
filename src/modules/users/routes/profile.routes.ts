@@ -6,6 +6,8 @@ import ProfileController from "../controllers/ProfileController";
 const profileRouter = Router();
 const profileController = new ProfileController();
 
+profileRouter.use(isAuthenticated);
+
 profileRouter.get('/', profileController.show);
 
 profileRouter.put('/',
