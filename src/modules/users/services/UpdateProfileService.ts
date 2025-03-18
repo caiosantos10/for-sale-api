@@ -27,7 +27,10 @@ export default class UpdateProfileService {
 
         if (!userByEmail) throw new AppError('User not found.', 400);
 
-        if (userByEmail && userByEmail.id !== user.id) {
+        /** Caso encontre usuário... */
+
+        if (userByEmail && (userByEmail.id !== id)) {
+            console.log(userByEmail, user, id, name)
             throw new AppError('There already one user with this email.', 400);
         }
 
@@ -36,9 +39,9 @@ export default class UpdateProfileService {
         }
 
         if (old_password && new_password) {
-            const checkPassword = compare(old_password, user.password);
+            const checkPassword = await compare(old_password, user.password);
 
-            if (!checkPassword) throw new AppError('Old password does not match', 400);
+            if (!checkPassword) throw new AppError('Old password does not match.', 400);
 
             user.password = new_password;
         }

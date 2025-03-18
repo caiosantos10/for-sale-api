@@ -5,18 +5,17 @@ import FindOneUserService from '../services/FindOneUserService';
 
 export default class ProfileController {
     public async show(request: Request, response: Response): Promise<Response> {
-        const { id } = request.params;
+        const user_id = request.user.id;
 
         const findOneUserService = new FindOneUserService();
-
-        const profile = await findOneUserService.execute({ id });
+        
+        const profile = await findOneUserService.execute({ id: user_id });
 
         return response.json(profile);
     }
     public async update(request: Request, response: Response): Promise<Response> {
         try {
-
-            const { id } = request.params;
+            const user_id = request.user.id;
             const {
                 name,
                 email,
@@ -27,7 +26,7 @@ export default class ProfileController {
             const updateProfileService = new UpdateProfileService();
             
             const user = await updateProfileService.execute({
-                id,
+                id: user_id,
                 name,
                 email,
                 new_password,

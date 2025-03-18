@@ -12,17 +12,14 @@ profileRouter.get('/', profileController.show);
 
 profileRouter.put('/',
     celebrate({
-        [Segments.PARAMS]: {
-            id: Joi.string().uuid().required(),
-        },
         [Segments.BODY]: {
             name: Joi.string().required(),
             email: Joi.string().email().required(),
             old_password: Joi.string(),
             new_password: Joi.string().optional(),
             new_password_confirmation: Joi.string()
-            .valid(Joi.ref('password'))
-            .when('password', {
+            .valid(Joi.ref('new_password'))
+            .when('new_password', {
                 is: Joi.exist(),
                 then: Joi.required(),
             }),
