@@ -1,8 +1,18 @@
 import { Request, Response } from 'express';
 import AppError from 'src/shared/errors/AppError';
 import UpdateProfileService from '../services/UpdateProfileService';
+import FindOneUserService from '../services/FindOneUserService';
 
 export default class ProfileController {
+    public async show(request: Request, response: Response): Promise<Response> {
+        const { id } = request.params;
+
+        const findOneUserService = new FindOneUserService();
+
+        const profile = await findOneUserService.execute({ id });
+
+        return response.json(profile);
+    }
     public async update(request: Request, response: Response): Promise<Response> {
         try {
 
