@@ -1,6 +1,7 @@
 import swaggerUi from 'swagger-ui-express';
 import usersSwagger from './swagger/users.swagger';
 import productsSwagger from './swagger/products.swagger';
+import authSwagger from './swagger/auth.swagger';
 
 // Combina as especificações
 const combinedSwagger = {
@@ -17,6 +18,7 @@ const combinedSwagger = {
     },
   ],
   paths: {
+    ...authSwagger.paths,
     ...usersSwagger.paths,
     ...productsSwagger.paths,
   },
@@ -24,6 +26,7 @@ const combinedSwagger = {
     schemas: {
       ...usersSwagger.components?.schemas,
       ...productsSwagger.components?.schemas,
+      // ...authSwagger.components?.schemas,
     },
   },
 };
