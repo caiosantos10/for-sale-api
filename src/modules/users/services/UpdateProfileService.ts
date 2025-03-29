@@ -1,7 +1,7 @@
 import AppError from "src/shared/errors/AppError";
 import UsersRepository from "../repositories/UsersRepository";
 import User from "../entities/Users";
-import { compare } from "bcryptjs";
+import { compare, hash } from "bcryptjs";
 
 interface IRequest {
     id: string;
@@ -43,7 +43,7 @@ export default class UpdateProfileService {
 
             if (!checkPassword) throw new AppError('Old password does not match.', 400);
 
-            user.password = new_password;
+            user.password = await hash(new_password, 8);
         }
 
         user.name = name;

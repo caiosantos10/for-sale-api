@@ -2,7 +2,7 @@ import { Router } from "express";
 import ProductController from "../controllers/ProductController";
 import { celebrate, Joi, Segments } from 'celebrate';
 import multer from "multer";
-import isAuthenticated from "@shared/errors/middlewares/isAuthenticated";
+import isAuthenticated from "@shared/middlewares/isAuthenticated";
 import ProductImageController from "../controllers/ProductImageController";
 import uploadConfig from "@config/upload";
 
