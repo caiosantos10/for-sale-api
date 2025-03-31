@@ -45,7 +45,8 @@ backend/
 │   │   ├── sales/         # Gerenciamento de vendas
 │   │   └── messages/      # Mensagens entre usuários
 │   ├── config/            # Configurações (ex.: banco de dados, autenticação)
-│   ├── entities/          # Definições de tabelas e relacionamentos
+│   ├── migrations/        # Definições de tabelas e relacionamentos
+│   ├── swagger/           # Documentação dos endpoints
 │   └── server.ts          # Arquivo principal do servidor
 ```
 
