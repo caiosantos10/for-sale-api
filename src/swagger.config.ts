@@ -2,6 +2,7 @@ import swaggerUi from 'swagger-ui-express';
 import usersSwagger from './swagger/users.swagger';
 import productsSwagger from './swagger/products.swagger';
 import authSwagger from './swagger/auth.swagger';
+import { env } from 'process';
 
 // Combina as especificações
 const combinedSwagger = {
@@ -13,7 +14,7 @@ const combinedSwagger = {
   },
   servers: [
     {
-      url: 'http://localhost:3333',
+      url: env.PORT,
       description: 'Servidor local',
     },
   ],

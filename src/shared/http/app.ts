@@ -2,7 +2,6 @@ import { setupSwagger } from "src/swagger.config";
 import express from "express";
 import cors from 'cors';
 import routes from "./routes";
-import { errors } from "celebrate";
 import errorHandler from "@shared/middlewares/error-handler";
 
 const app = express(); 

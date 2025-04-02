@@ -9,6 +9,13 @@ const envSchema = z.object({
         .default('development'),
     PORT: z.coerce.number().default(3333),
     API_URL: z.string().default('http://localhost:3333'),
+    DB_TYPE: z.literal('postgres').default('postgres'),
+    DB_HOST: z.string().default('localhost'),
+    DB_PORT: z.coerce.number().default(5432),
+    DB_SCHEMA: z.string().default('public'),
+    DB_USER: z.string().default('forsale'),
+    DB_PASSWORD: z.string().default('admin'),
+    DB_NAME: z.string().default('forsale'),
 })
 
 const _env = envSchema.safeParse(process.env)
