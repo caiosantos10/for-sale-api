@@ -9,6 +9,13 @@ const UserTokensRepository = AppDataSource.getRepository(UserTokens).extend({
         const userToken = await this.create({ user_id });
 
         try {
+            await this
+                .createQueryBuilder()
+                .delete()
+                .from(UserTokens)
+                .where("user_id = :user_id", { user_id })
+                .execute()
+            
             await this.save(userToken);
         } catch (err) {
             console.error(err)
