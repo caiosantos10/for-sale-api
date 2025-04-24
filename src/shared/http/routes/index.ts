@@ -4,6 +4,7 @@ import { Router } from 'express';
 import sessionsRouter from 'src/modules/auth/routes/session.routes';
 import productRouter from 'src/modules/products/routes/product.routes';
 import userRouter from 'src/modules/users/routes/user.routes';
+import cartRouter from '@modules/cart/routes/cart.routes';
 
 const routes = Router();
 
@@ -12,5 +13,6 @@ routes.use('/users', userRouter);
 routes.use('/sessions', sessionsRouter);
 routes.use('/password', passwordRouter);
 routes.use('/profile', profileRouter);
+routes.use('/cart', cartRouter);
 
 export default routes;
