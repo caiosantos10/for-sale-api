@@ -1,6 +1,6 @@
-import { env } from '@config/env';
 import 'reflect-metadata';
 import { DataSource } from "typeorm";
+import { env } from '../../config/env';
 
 export const AppDataSource = new DataSource({
     type: env.DB_TYPE,
