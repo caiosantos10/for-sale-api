@@ -1,5 +1,4 @@
-
-import AppError from '@shared/errors/AppError'
+import AppError from '../../shared/errors/AppError'
 import 'dotenv/config'
 import { z } from 'zod'
 
