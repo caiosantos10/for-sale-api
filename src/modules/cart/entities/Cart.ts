@@ -5,9 +5,11 @@ import {
     Entity,
     JoinColumn,
     ManyToOne,
+    OneToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn
 } from "typeorm";
+import CartProducts from './CartProducts';
 
 @Entity('Carts')
 export default class Cart {
@@ -19,8 +21,8 @@ export default class Cart {
     @Column()
     user_id: string;
 
-    // @Column()
-    // product_ids: string[]; 
+    @OneToMany(() => CartProducts, (cartProduct) => cartProduct.cart)
+    cartProducts: CartProducts[];
 
     @CreateDateColumn()
     created_at: Date;
