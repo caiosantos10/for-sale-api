@@ -2,6 +2,7 @@ import { Router } from "express";
 import { celebrate, Joi, Segments } from 'celebrate';
 import isAuthenticated from "@shared/middlewares/isAuthenticated";
 import CartController from "../controllers/ CartController";
+import { ProductsRequestDTO } from "../utils/cart.dto";
 
 const cartRouter = Router();
 const cartController = new CartController();
@@ -32,7 +33,7 @@ cartRouter.post(
     '/',
     celebrate({
         [Segments.BODY]: {
-            productIds: Joi.array().required(),
+            products: Joi.array<ProductsRequestDTO[]>().required(),
         }
     }),
     isAuthenticated,
@@ -46,7 +47,7 @@ cartRouter.put(
             id: Joi.string().uuid().required(),
         },
         [Segments.BODY]: {
-            productIds: Joi.array().required(),
+            products: Joi.array<ProductsRequestDTO[]>().required(),
         }
     }),
     isAuthenticated,

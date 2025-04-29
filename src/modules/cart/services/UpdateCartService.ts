@@ -3,33 +3,41 @@ import CartRepository from "../repositories/CartRepository";
 import CartProductsRepository from "../repositories/CartProductsRepository";
 import ProductRepository from "@modules/products/repositories/ProductRepository";
 import { In } from "typeorm";
-import { CartResponseDTO } from "../utils/cart-response.dto";
+import { CartResponseDTO } from "../utils/cart.dto";
 
-interface IRequest {
+interface ProductsDTO {
     id: string;
-    product_ids: string[];
+    quantity?: number;
+    observations?: string;
+}
+interface IRequest {
+    cart_id: string;
+    products: ProductsDTO[]
 }
 
 export default class UpdateCartService {
-    public async execute({ id, product_ids }: IRequest): Promise<CartResponseDTO> {
-        const cart = await CartRepository.findOne({ where: { id } });
+    public async execute({ cart_id, products }: IRequest): Promise<CartResponseDTO> {
+        const product_ids = products.map(product => product.id);
+        const cart = await CartRepository.findOne({ where: { id: cart_id } });
 
         if (!cart) throw new AppError('Cart not found.');
 
         // Remover todos os itens de CartProducts de acordo com o id do carrinho em questão
-        const itemsToRemove = await CartProductsRepository.findBy({ cart_id: id });
+        const itemsToRemove = await CartProductsRepository.findBy({ cart_id });
         await CartProductsRepository.remove(itemsToRemove);
 
         // Validar se todos os produtos existem
-        const products = await ProductRepository.findBy({ id: In(product_ids) });
-        if (products.length !== product_ids.length) {
+        const foundedProducts = await ProductRepository.findBy({ id: In(product_ids) });
+        if (foundedProducts.length !== product_ids.length) {
             throw new Error('One or more products not found');
         }
 
         // Criar registros de CartProducts para cada product_id informado
-        const itemsToAdd = products.map(product => CartProductsRepository.create({
+        const itemsToAdd = foundedProducts.map((product, index) => CartProductsRepository.create({
             cart_id: cart.id,
             product_id: product.id,
+            quantity: products[index].quantity,
+            observations: products[index].observations,
         }));
         await CartProductsRepository.save(itemsToAdd);
         await CartRepository.save(cart);
@@ -43,9 +51,15 @@ export default class UpdateCartService {
         const cartResponse: CartResponseDTO = {
             id: cart.id,
             user_id: cart.user_id,
-            created_at: cart.created_at,
-            updated_at: cart.updated_at,
-            products: cartComplete?.cartProducts.map(cartProduct => (cartProduct.product)) ?? [],
+            products: cartComplete?.cartProducts.map(cartProduct => ({
+                id: cartProduct.product.id,
+                name: cartProduct.product.name,
+                description: cartProduct.product.name,
+                price: cartProduct.product.price,
+                image: cartProduct.product.image,
+                quantity: cartProduct.quantity,
+                observations: cartProduct.observations,
+            })) ?? [],
         };
 
         return cartResponse;

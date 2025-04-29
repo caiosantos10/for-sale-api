@@ -1,6 +1,6 @@
 import AppError from "src/shared/errors/AppError";
 import CartRepository from "../repositories/CartRepository";
-import { CartResponseDTO } from "../utils/cart-response.dto";
+import { CartResponseDTO } from "../utils/cart.dto";
 
 interface IRequest {
     id: string;
@@ -18,9 +18,15 @@ export default class FindOneCartService {
          const cartResponse: CartResponseDTO = {
             id: cart.id,
             user_id: cart.user_id,
-            created_at: cart.created_at,
-            updated_at: cart.updated_at,
-            products: cart?.cartProducts.map(cartProduct => (cartProduct.product)) ?? [],
+            products: cart?.cartProducts.map(cartProduct => ({
+                id: cartProduct.product.id,
+                name: cartProduct.product.name,
+                description: cartProduct.product.name,
+                price: cartProduct.product.price,
+                image: cartProduct.product.image,
+                quantity: cartProduct.quantity,
+                observations: cartProduct.observations,
+            })) ?? [],
         };
 
         return cartResponse;

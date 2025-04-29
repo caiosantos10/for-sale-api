@@ -1,18 +1,19 @@
 import AppError from "src/shared/errors/AppError";
 import CartRepository from "../repositories/CartRepository";
 import CartProductsRepository from "../repositories/CartProductsRepository";
-import { CartResponseDTO } from "../utils/cart-response.dto";
+import { CartResponseDTO, ProductsRequestDTO } from "../utils/cart.dto";
 import ProductRepository from "@modules/products/repositories/ProductRepository";
 import { In } from "typeorm";
 import UpdateCartService from "./UpdateCartService";
 
 interface IRequest {
     user_id: string;
-    product_ids : string[];
+    products: ProductsRequestDTO[]
 }
 
 export default class CreateCartService {
-    public async execute({ user_id, product_ids }: IRequest): Promise<CartResponseDTO> {
+    public async execute({ user_id, products }: IRequest): Promise<CartResponseDTO> {
+        const product_ids = products.map(product => product.id);
         if (product_ids.length <= 0) {
             throw new AppError('You must pass one or more products to create a Cart.', 400);
         }
@@ -24,8 +25,8 @@ export default class CreateCartService {
         if (cartAlreadyExists) {
             const updateCartService = new UpdateCartService()
             cartResponse = await updateCartService.execute({
-                id: cartAlreadyExists.id,
-                product_ids,
+                cart_id: cartAlreadyExists.id,
+                products,
             });
         } else {
             // If there is no cart by user, create one
@@ -33,15 +34,17 @@ export default class CreateCartService {
             await CartRepository.save(cart);
 
             // Valid if all products exist
-            const products = await ProductRepository.findBy({ id: In(product_ids) });
-            if (products.length !== product_ids.length) {
+            const foundedProducts = await ProductRepository.findBy({ id: In(product_ids) });
+            if (foundedProducts.length !== product_ids.length) {
                 throw new Error('One or more products not found');
             }
 
             // Create a CartProducts for each Product 
-            const cartProducts = products.map(product => CartProductsRepository.create({
+            const cartProducts = foundedProducts.map((product, index) => CartProductsRepository.create({
                 cart_id: cart.id,
                 product_id: product.id,
+                quantity: products[index].quantity,
+                observations: products[index].observations,
             }));
             await CartProductsRepository.save(cartProducts);
 
@@ -54,9 +57,15 @@ export default class CreateCartService {
             cartResponse = {
                 id: cart.id,
                 user_id: cart.user_id,
-                created_at: cart.created_at,
-                updated_at: cart.updated_at,
-                products: cartComplete?.cartProducts.map(cartProduct => (cartProduct.product)) ?? [],
+                products: cartComplete?.cartProducts.map(cartProduct => ({
+                    id: cartProduct.product.id,
+                    name: cartProduct.product.name,
+                    description: cartProduct.product.name,
+                    price: cartProduct.product.price,
+                    image: cartProduct.product.image,
+                    quantity: cartProduct.quantity,
+                    observations: cartProduct.observations,
+                })) ?? [],
             };
         }
 
