@@ -26,13 +26,13 @@ export default class CartController {
     public async create(request: Request, response: Response): Promise<Response> {
         try {
             const user_id = request.user.id;
-            const { productIds } = request.body;
+            const { products } = request.body;
 
             const createCartService = new CreateCartService();
 
             const cart = await createCartService.execute({
                 user_id,
-                product_ids: productIds,
+                products,
             });
 
             return response.json(cart);
@@ -52,13 +52,13 @@ export default class CartController {
         try {
 
             const { id } = request.params;
-            const { productIds } = request.body;
+            const { products } = request.body;
             
             const updateCartService = new UpdateCartService();
             
             const cart = await updateCartService.execute({
-                id,
-                product_ids: productIds,
+                cart_id: id,
+                products,
             });
             
             return response.json(cart);

@@ -27,4 +27,11 @@ export default class CartProducts {
 
     @UpdateDateColumn()
     updated_at: Date;
+
+    @Column()
+    quantity: number;
+
+    @Column()
+    observations: string;
+
 }
