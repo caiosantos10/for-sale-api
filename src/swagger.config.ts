@@ -3,6 +3,7 @@ import usersSwagger from './swagger/users.swagger';
 import productsSwagger from './swagger/products.swagger';
 import authSwagger from './swagger/auth.swagger';
 import { env } from 'process';
+import cartSwagger from './swagger/cart.swagger';
 
 // Combina as especificações
 const combinedSwagger = {
@@ -22,11 +23,13 @@ const combinedSwagger = {
     ...authSwagger.paths,
     ...usersSwagger.paths,
     ...productsSwagger.paths,
+    ...cartSwagger.paths,
   },
   components: {
     schemas: {
       ...usersSwagger.components?.schemas,
       ...productsSwagger.components?.schemas,
+      ...cartSwagger.components?.schemas,
       // ...authSwagger.components?.schemas,
     },
   },
