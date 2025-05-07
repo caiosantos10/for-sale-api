@@ -1,14 +1,15 @@
-import Cart from "@modules/cart/entities/Cart";
-import User from "@modules/users/entities/Users";
+import Users from "@modules/users/entities/Users";
 import {
     Column,
     CreateDateColumn,
     Entity,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
-    ManyToOne,
-    JoinColumn
+    ManyToOne, 
+    JoinColumn,
+    OneToMany
 } from "typeorm";
+import PurchaseProducts from "./PurchaseProducts";
 
 @Entity('Purchase')
 export default class Purchase {
@@ -18,16 +19,16 @@ export default class Purchase {
     @Column()
     cart_id: string;
 
+    @ManyToOne(() => Users)
+    @JoinColumn({ name: 'user_id' })
     @Column()
     user_id: string;
 
-    @ManyToOne(() => Cart)
-    @JoinColumn({ name: 'cart_id' })
-    cart: Cart;
+    @Column()
+    status: string;
 
-    @ManyToOne(() => User)
-    @JoinColumn({ name: 'user_id' })
-    user: User;
+    @OneToMany(() => PurchaseProducts, (purchaseProduct) => purchaseProduct.purchase)
+    purchaseProducts: PurchaseProducts[];
 
     @CreateDateColumn()
     created_at: Date;

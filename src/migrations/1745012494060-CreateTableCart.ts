@@ -25,8 +25,8 @@ export class CreateTableCart1745012494060 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`DROP TABLE IF EXISTS "Carts"`);
         await queryRunner.query(`DROP TABLE IF EXISTS "CartProducts"`);
+        await queryRunner.query(`DROP TABLE IF EXISTS "Carts"`);
     }
 
 }
