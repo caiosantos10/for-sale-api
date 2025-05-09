@@ -29,6 +29,26 @@ export class AlterCartProductsAddQuantityAndObservations1745958805378 implements
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-    }
+        await queryRunner.query(`
+            DO $$
+            BEGIN
+                IF EXISTS (
+                    SELECT 1 FROM information_schema.columns
+                    WHERE table_name = 'CartProducts' AND column_name = 'quantity'
+                ) THEN
+                    ALTER TABLE "CartProducts"
+                    DROP COLUMN quantity;
+                END IF;
 
+                IF EXISTS (
+                    SELECT 1 FROM information_schema.columns
+                    WHERE table_name = 'CartProducts' AND column_name = 'observations'
+                ) THEN
+                    ALTER TABLE "CartProducts"
+                    DROP COLUMN observations;
+                END IF;
+            END
+            $$;
+        `);
+    }
 }

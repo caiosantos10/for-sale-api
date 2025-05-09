@@ -14,5 +14,6 @@ routes.use('/sessions', sessionsRouter);
 routes.use('/password', passwordRouter);
 routes.use('/profile', profileRouter);
 routes.use('/cart', cartRouter);
+routes.use('/purchase', cartRouter);
 
 export default routes;
