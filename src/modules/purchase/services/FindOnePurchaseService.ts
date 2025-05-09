@@ -27,7 +27,7 @@ export default class FindOnePurchaseService {
                 quantity: purchaseProduct.quantity,
                 observations: purchaseProduct.observations,
             })) ?? [],
-            status: purchase.id,
+            status: purchase.status,
         };
 
         return PurchaseResponse;
