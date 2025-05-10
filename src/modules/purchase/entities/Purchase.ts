@@ -16,9 +16,6 @@ export default class Purchase {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @Column()
-    cart_id: string;
-
     @ManyToOne(() => Users)
     @JoinColumn({ name: 'user_id' })
     @Column()

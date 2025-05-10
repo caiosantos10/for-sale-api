@@ -16,13 +16,11 @@ export default class PurchaseController {
     public async create(request: Request, response: Response): Promise<Response> {
         try {
             const user_id = request.user.id;
-            const { cart_id } = request.body;
 
             const createPurchaseService = new CreatePurchaseService();
 
             const purchase = await createPurchaseService.execute({
                 user_id,
-                cart_id,
             });
 
             return response.json(purchase);

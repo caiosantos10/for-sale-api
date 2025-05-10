@@ -6,29 +6,28 @@ import CartRepository from "@modules/cart/repositories/CartRepository";
 
 interface IRequest {
     user_id: string;
-    cart_id: string;
 }
 
 export default class CreatePurchaseService {
-    public async execute({ user_id, cart_id }: IRequest): Promise<PurchaseResponseDTO> {
-        const cartExists = await CartRepository.findOne({ where: { id: cart_id }} )
+    public async execute({ user_id }: IRequest): Promise<PurchaseResponseDTO> {
+        const cartExists = await CartRepository.findByUser(user_id);
         if (!cartExists) {
             throw new AppError('Cart not found', 404);
         }
         
-        const purchase = PurchaseRepository.create({ user_id, cart_id });
+        const purchase = PurchaseRepository.create({ user_id });
+        await PurchaseRepository.save(purchase);
 
         const cart = await CartRepository.findOne({
-            where: { id: cart_id },
+            where: { id: cartExists.id },
             relations: ['cartProducts', 'cartProducts.product']
         });
 
-        await PurchaseRepository.save(purchase);
 
         // Create a PurchaseProducts for each Product 
         const purchaseProducts = cart!.cartProducts.map(cartProduct => ({
             product_id: cartProduct.product.id,
-            purchase_id: cartProduct.product.name,
+            purchase_id: purchase.id,
             quantity: cartProduct.quantity,
             observations: cartProduct.observations,
         }));
