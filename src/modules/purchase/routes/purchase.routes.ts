@@ -19,11 +19,6 @@ purchaseRouter.get(
 
 purchaseRouter.post(
     '/',
-    celebrate({
-        [Segments.BODY]: {
-            cart_id: Joi.string().required(),
-        }
-    }),
     isAuthenticated,
     purchaseController.create,
 );
