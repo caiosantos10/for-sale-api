@@ -55,6 +55,7 @@ export default class CreatePurchaseService {
             status: purchase.status
         };
         
+        await CartRepository.remove(cartExists);
 
         return purchaseResponse;
 
