@@ -3,6 +3,7 @@ import { PurchaseResponseDTO } from "../utils/purchase.dto";
 import PurchaseRepository from "../repositories/PurchaseRepository";
 import PurchaseProductsRepository from "../repositories/PurchaseProductsRepository";
 import CartRepository from "@modules/cart/repositories/CartRepository";
+import DeleteCartService from "@modules/cart/services/DeleteCartService";
 
 interface IRequest {
     user_id: string;
@@ -55,6 +56,7 @@ export default class CreatePurchaseService {
             status: purchase.status
         };
         
+        await CartRepository.remove(cartExists);
 
         return purchaseResponse;
 
