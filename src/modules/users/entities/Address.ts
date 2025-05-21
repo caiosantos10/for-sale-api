@@ -31,7 +31,7 @@ export class Address {
 
     @ManyToOne(() => User, user => user.addresses)
     @JoinColumn({ name: 'user_id' })
-    user: User;
+    user_id: string;
 
     @CreateDateColumn()
     created_at: Date;
