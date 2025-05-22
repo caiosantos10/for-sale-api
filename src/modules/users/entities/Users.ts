@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from "typeorm";
 import RoleEnum from "../shared/enums/Role.enum";
+import { Address } from "./Address";
 
 @Entity('Users')
 export default class User {
@@ -19,11 +20,14 @@ export default class User {
     password: string;
 
     @Column({
-        type: 'enum', // Define o tipo da coluna como enum
-        enum: RoleEnum, // Passa a enumeração
-        default: RoleEnum.Customer, // Define um valor padrão, se necessário
+        type: 'enum',
+        enum: RoleEnum,
+        default: RoleEnum.Customer,
     })
     role: RoleEnum;
+
+    @OneToMany(() => Address, address => address.user_id)
+    addresses: Address[];
 
     @CreateDateColumn()
     created_at: Date;

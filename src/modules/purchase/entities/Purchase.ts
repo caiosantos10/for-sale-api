@@ -27,6 +27,9 @@ export default class Purchase {
     @OneToMany(() => PurchaseProducts, (purchaseProduct) => purchaseProduct.purchase)
     purchaseProducts: PurchaseProducts[];
 
+    @Column()
+    delivery_address: string;
+
     @CreateDateColumn()
     created_at: Date;
 
