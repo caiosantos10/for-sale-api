@@ -67,7 +67,8 @@ export default class UserController {
                 lastName,
                 email,
                 password,
-                role
+                role,
+                addresses
             } = request.body;
             
             const updateUserService = new UpdateUserService();
@@ -78,7 +79,8 @@ export default class UserController {
                 lastName,
                 email,
                 password,
-                role
+                role,
+                addresses
             });
             
             return response.json(user);

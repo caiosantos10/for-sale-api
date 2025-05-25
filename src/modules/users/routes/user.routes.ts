@@ -6,6 +6,14 @@ import isAuthenticated from "@shared/middlewares/isAuthenticated";
 const userRouter = Router();
 const userController = new UserController();
 
+const addressSchema = Joi.object({
+    street: Joi.string().required(),
+    number: Joi.string().required(),
+    city: Joi.string().required(),
+    state: Joi.string().required(),
+    zip_code: Joi.string().pattern(/^\d{5}-\d{3}$/).required(),
+});
+
 userRouter.get('/', isAuthenticated, userController.index);
 
 userRouter.get(
@@ -45,6 +53,7 @@ userRouter.put(
             email: Joi.string().email().required(),
             password: Joi.string().required(),
             role: Joi.string().required(),
+            addresses: Joi.array().items(addressSchema),
         }
     }),
     isAuthenticated,
