@@ -14,7 +14,7 @@ export default class UpdateUserService {
         password,
         role,
         addresses
-    }: UpdateUserDTO): Promise<User> {
+    }: UpdateUserDTO): Promise<UpdateUserDTO> {
         const user = await UsersRepository.findOne({ where: { id } });
 
         if (!user) throw new AppError('User not found.');
@@ -30,10 +30,38 @@ export default class UpdateUserService {
         })));
         await AddressRepository.save(addressesToAdd);
 
-        user.addresses = addressesToAdd;
+        // If addresses is an empty array, remove all addresses linked to the user
+        if (addressesToAdd.length === 0) {
+            const addressToExclude = await AddressRepository.find({
+                where: { user: { id } }
+            });
+            await AddressRepository.remove(addressToExclude!);
+        }
 
         await UsersRepository.save(user);
 
-        return user;
+        const userComplete = await UsersRepository.findOne({
+            where: { id },
+            relations: ['addresses'],
+        });
+
+        const userResponse = {
+            id: userComplete!.id,
+            name: userComplete!.name,
+            lastName: userComplete!.lastName,
+            email: userComplete!.email,
+            password: userComplete!.password,
+            role: userComplete!.role,
+            addresses: userComplete!.addresses.map(address => ({
+                id: address.id,
+                street: address.street,
+                number: address.number,
+                city: address.city,
+                state: address.state,
+                zip_code: address.zip_code,
+            })),
+        };
+
+        return userResponse;
     }
 }

@@ -26,7 +26,7 @@ export default class User {
     })
     role: RoleEnum;
 
-    @OneToMany(() => Address, address => address.user_id)
+    @OneToMany(() => Address, address => address.user)
     addresses: Address[];
 
     @CreateDateColumn()
