@@ -7,7 +7,7 @@ import {
     CreateDateColumn,
     UpdateDateColumn,
 } from 'typeorm';
-import User from './Users';
+import Users from './Users';
 
 @Entity('Addresses')
 export class Address {
@@ -29,9 +29,12 @@ export class Address {
     @Column()
     zip_code: string;
 
-    @ManyToOne(() => User, user => user.addresses)
-    @JoinColumn({ name: 'user_id' })
+    @Column()
     user_id: string;
+
+    @ManyToOne(() => Users)
+    @JoinColumn({ name: 'user_id' })
+    user: Users;
 
     @CreateDateColumn()
     created_at: Date;

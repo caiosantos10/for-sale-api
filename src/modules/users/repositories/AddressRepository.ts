@@ -3,7 +3,7 @@ import { Address } from "../entities/Address";
 
 const AddressRepository = AppDataSource.getRepository(Address).extend({
     findByUser(user_id: string): Promise<Address | null> {
-        return this.findOne({ where: { user_id } });
+        return this.findOne({ where: { user: { id: user_id } } });
     }
 });
 

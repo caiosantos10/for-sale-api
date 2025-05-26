@@ -11,6 +11,7 @@ export interface UpdateUserDTO {
 }
 
 export interface AddressDTO {
+    id?: string;
     street: string;
     number: string;
     city: string;
