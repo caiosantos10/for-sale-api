@@ -3,19 +3,24 @@ import { PurchaseResponseDTO } from "../utils/purchase.dto";
 import PurchaseRepository from "../repositories/PurchaseRepository";
 import PurchaseProductsRepository from "../repositories/PurchaseProductsRepository";
 import CartRepository from "@modules/cart/repositories/CartRepository";
+import { AddressDTO } from "@modules/users/utils/users.dto";
 
 interface IRequest {
     user_id: string;
+    delivery_address: AddressDTO;
 }
 
 export default class CreatePurchaseService {
-    public async execute({ user_id }: IRequest): Promise<PurchaseResponseDTO> {
+    public async execute({ user_id, delivery_address }: IRequest): Promise<PurchaseResponseDTO> {
         const cartExists = await CartRepository.findByUser(user_id);
         if (!cartExists) {
             throw new AppError('Cart not found', 404);
         }
         
-        const purchase = PurchaseRepository.create({ user_id });
+        const purchase = PurchaseRepository.create({
+            user_id,
+            delivery_address: this.addressToString(delivery_address)
+        });
         await PurchaseRepository.save(purchase);
 
         const cart = await CartRepository.findOne({
@@ -59,5 +64,9 @@ export default class CreatePurchaseService {
 
         return purchaseResponse;
 
+    }
+
+    private addressToString(address: AddressDTO): string {
+        return `${address.street},  ${address.number}, ${address.city}, ${address.state}, ${address.zip_code}`;
     }
 }
