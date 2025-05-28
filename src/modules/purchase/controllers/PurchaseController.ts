@@ -17,10 +17,13 @@ export default class PurchaseController {
         try {
             const user_id = request.user.id;
 
+            const { delivery_address } = request.body;
+
             const createPurchaseService = new CreatePurchaseService();
 
             const purchase = await createPurchaseService.execute({
                 user_id,
+                delivery_address
             });
 
             return response.json(purchase);
