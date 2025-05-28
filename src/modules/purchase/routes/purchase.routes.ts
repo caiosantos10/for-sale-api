@@ -22,8 +22,7 @@ purchaseRouter.post(
     '/',
     celebrate({
         [Segments.BODY]: {
-            status: Joi.string().required(),
-            delivery_address: addressSchema,
+            delivery_address: addressSchema.required(),
         }
     }),
     isAuthenticated,
