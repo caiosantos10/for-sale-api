@@ -43,4 +43,18 @@ purchaseRouter.put(
     purchaseController.update,
 );
 
+purchaseRouter.put(
+    '/:id/cancelar',
+    celebrate({
+        [Segments.PARAMS]: {
+            id: Joi.string().uuid().required(),
+        },
+        [Segments.BODY]: {
+            status: Joi.string().required(),
+        }
+    }),
+    isAuthenticated,
+    purchaseController.cancel,
+);
+
 export default purchaseRouter;
