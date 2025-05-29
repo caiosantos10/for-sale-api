@@ -3,6 +3,7 @@ import AppError from 'src/shared/errors/AppError';
 import FindOnePurchaseService from '../services/FindOnePurchaseService';
 import CreatePurchaseService from '../services/CreatePurchaseService';
 import UpdatePurchaseService from '../services/UpdatePurchaseService';
+import PurchaseStatus from '../utils/purchaseStatus.enum';
 
 export default class PurchaseController {
     public async show(request: Request, response: Response): Promise<Response> {
@@ -52,6 +53,31 @@ export default class PurchaseController {
                 status,
             });
             
+            return response.json(Purchase);
+        } catch (error) {
+            // Verifica se o erro é uma instância de AppError
+            if (error instanceof AppError) {
+                return response.status(error.statusCode).json({
+                    message: error.message,
+                });
+            }
+
+            throw error;
+        }
+    }
+
+    public async cancel(request: Request, response: Response): Promise<Response> {
+        try {
+
+            const { id } = request.params;
+
+            const updatePurchaseService = new UpdatePurchaseService();
+
+            const Purchase = await updatePurchaseService.execute({
+                id,
+                status: PurchaseStatus.CANCELLED,
+            });
+
             return response.json(Purchase);
         } catch (error) {
             // Verifica se o erro é uma instância de AppError
