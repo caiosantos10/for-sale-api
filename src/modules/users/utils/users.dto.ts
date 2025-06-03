@@ -18,3 +18,9 @@ export interface AddressDTO {
     state: string;
     zip_code: string;
 }
+
+export interface PaymentMethodDTO {
+    method: string;
+    cardBrand: string;
+    installments: number;
+}

@@ -3,15 +3,16 @@ import { PurchaseResponseDTO } from "../utils/purchase.dto";
 import PurchaseRepository from "../repositories/PurchaseRepository";
 import PurchaseProductsRepository from "../repositories/PurchaseProductsRepository";
 import CartRepository from "@modules/cart/repositories/CartRepository";
-import { AddressDTO } from "@modules/users/utils/users.dto";
+import { AddressDTO, PaymentMethodDTO } from "@modules/users/utils/users.dto";
 
 interface IRequest {
     user_id: string;
     delivery_address: AddressDTO;
+    payment_method: PaymentMethodDTO;
 }
 
 export default class CreatePurchaseService {
-    public async execute({ user_id, delivery_address }: IRequest): Promise<PurchaseResponseDTO> {
+    public async execute({ user_id, delivery_address, payment_method }: IRequest): Promise<PurchaseResponseDTO> {
         const cartExists = await CartRepository.findByUser(user_id);
         if (!cartExists) {
             throw new AppError('Cart not found', 404);
@@ -19,7 +20,8 @@ export default class CreatePurchaseService {
         
         const purchase = PurchaseRepository.create({
             user_id,
-            delivery_address: this.addressToString(delivery_address)
+            delivery_address: this.addressToString(delivery_address),
+            payment_method
         });
         await PurchaseRepository.save(purchase);
 

@@ -3,6 +3,7 @@ import { celebrate, Joi, Segments } from 'celebrate';
 import isAuthenticated from "@shared/middlewares/isAuthenticated";
 import PurchaseController from "../controllers/PurchaseController";
 import addressSchema from "@modules/users/utils/addressSchema";
+import paymentMethodSchema from "@modules/users/utils/paymentMethodSchema";
 
 const purchaseRouter = Router();
 const purchaseController = new PurchaseController();
@@ -23,6 +24,7 @@ purchaseRouter.post(
     celebrate({
         [Segments.BODY]: {
             delivery_address: addressSchema.required(),
+            payment_method: paymentMethodSchema.required(),
         }
     }),
     isAuthenticated,

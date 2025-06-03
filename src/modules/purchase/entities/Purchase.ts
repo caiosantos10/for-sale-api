@@ -7,9 +7,11 @@ import {
     UpdateDateColumn,
     ManyToOne, 
     JoinColumn,
-    OneToMany
+    OneToMany,
+    OneToOne
 } from "typeorm";
 import PurchaseProducts from "./PurchaseProducts";
+import { PaymentMethods } from "./PaymentMethods";
 
 @Entity('Purchase')
 export default class Purchase {
@@ -29,6 +31,9 @@ export default class Purchase {
 
     @Column()
     delivery_address: string;
+
+    @OneToOne(() => PaymentMethods, (paymentMethods) => paymentMethods.purchase)
+    payment_method: PaymentMethods;
 
     @CreateDateColumn()
     created_at: Date;
