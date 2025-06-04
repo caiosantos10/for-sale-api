@@ -13,6 +13,7 @@ export interface PurchaseResponseDTO {
     user_id: string;
     products: ProductResponseDTO[];
     status: string;
+    delivery_address: string;
 }
 
 export interface ProductsRequestDTO {

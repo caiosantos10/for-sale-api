@@ -10,7 +10,11 @@ export default class FindOnePurchaseService {
     public async execute({ id }: IRequest): Promise<PurchaseResponseDTO> {
         const purchase = await PurchaseRepository.findOne({
             where: { id },
-            relations: ['purchaseProducts', 'purchaseProducts.product']
+            relations: [
+                'purchaseProducts',
+                'purchaseProducts.product',
+                'paymentMethod',
+            ]
         });
 
         if (!purchase) throw new AppError('Purchase not found.');
@@ -28,6 +32,7 @@ export default class FindOnePurchaseService {
                 observations: purchaseProduct.observations,
             })) ?? [],
             status: purchase.status,
+            delivery_address: purchase.delivery_address
         };
 
         return PurchaseResponse;
