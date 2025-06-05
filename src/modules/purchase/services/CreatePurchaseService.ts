@@ -22,12 +22,13 @@ export default class CreatePurchaseService {
         const purchase = PurchaseRepository.create({
             user_id,
             delivery_address: this.addressToString(delivery_address),
-            // paymentMethod: payment_method,
         });
         await PurchaseRepository.save(purchase);
 
         const payment = PaymentMethodsRepository.create({
-            ...payment_method,
+            method: payment_method.method,
+            installments: payment_method.installments,
+            card_brand: payment_method.cardBrand,
             purchase_id: purchase.id
         })
         await PaymentMethodsRepository.save(payment);
@@ -67,7 +68,12 @@ export default class CreatePurchaseService {
                 observations: purchaseProduct.observations,
             })) ?? [],
             status: purchase.status,
-            delivery_address: purchase.delivery_address
+            delivery_address: purchase.delivery_address,
+            payment_method: {
+                installments: payment.installments,
+                method: payment.method,
+                cardBrand: payment.card_brand
+            }
         };
         
         await CartRepository.remove(cartExists);

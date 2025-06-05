@@ -13,7 +13,7 @@ export class PaymentMethods {
     installments: number;
 
     @Column({ nullable: true })
-    cardBrand: string;
+    card_brand: string;
 
     @OneToOne(() => Purchase, (purchase) => purchase.paymentMethod, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'purchase_id' })
