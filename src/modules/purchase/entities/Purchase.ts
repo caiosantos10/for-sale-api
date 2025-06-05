@@ -33,7 +33,7 @@ export default class Purchase {
     delivery_address: string;
 
     @OneToOne(() => PaymentMethods, (paymentMethods) => paymentMethods.purchase)
-    payment_method: PaymentMethods;
+    paymentMethod: PaymentMethods;
 
     @CreateDateColumn()
     created_at: Date;

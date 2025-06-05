@@ -4,6 +4,7 @@ import PurchaseRepository from "../repositories/PurchaseRepository";
 import PurchaseProductsRepository from "../repositories/PurchaseProductsRepository";
 import CartRepository from "@modules/cart/repositories/CartRepository";
 import { AddressDTO, PaymentMethodDTO } from "@modules/users/utils/users.dto";
+import PaymentMethodsRepository from "../repositories/PaymentMethodsRepository";
 
 interface IRequest {
     user_id: string;
@@ -21,9 +22,15 @@ export default class CreatePurchaseService {
         const purchase = PurchaseRepository.create({
             user_id,
             delivery_address: this.addressToString(delivery_address),
-            payment_method
+            // paymentMethod: payment_method,
         });
         await PurchaseRepository.save(purchase);
+
+        const payment = PaymentMethodsRepository.create({
+            ...payment_method,
+            purchase_id: purchase.id
+        })
+        await PaymentMethodsRepository.save(payment);
 
         const cart = await CartRepository.findOne({
             where: { id: cartExists.id },
@@ -59,7 +66,8 @@ export default class CreatePurchaseService {
                 quantity: purchaseProduct.quantity,
                 observations: purchaseProduct.observations,
             })) ?? [],
-            status: purchase.status
+            status: purchase.status,
+            delivery_address: purchase.delivery_address
         };
         
         await CartRepository.remove(cartExists);
