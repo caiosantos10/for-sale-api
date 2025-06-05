@@ -1,3 +1,5 @@
+import { PaymentMethodDTO } from "@modules/users/utils/users.dto";
+
 interface ProductResponseDTO {
     id: string;
     name: string;
@@ -14,6 +16,7 @@ export interface PurchaseResponseDTO {
     products: ProductResponseDTO[];
     status: string;
     delivery_address: string;
+    payment_method: PaymentMethodDTO
 }
 
 export interface ProductsRequestDTO {

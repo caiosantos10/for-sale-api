@@ -1,6 +1,7 @@
 import AppError from "src/shared/errors/AppError";
 import PurchaseRepository from "../repositories/PurchaseRepository";
 import { PurchaseResponseDTO } from "../utils/purchase.dto";
+import PaymentMethodsRepository from "../repositories/PaymentMethodsRepository";
 
 interface IRequest {
     id: string;
@@ -19,6 +20,10 @@ export default class FindOnePurchaseService {
 
         if (!purchase) throw new AppError('Purchase not found.');
 
+        const paymentMethod = await PaymentMethodsRepository.findByPurchaseId(id);
+
+        if (!paymentMethod) throw new AppError('Payment Method not found or invalid.');
+
         const PurchaseResponse: PurchaseResponseDTO = {
             id: purchase.id,
             user_id: purchase.user_id,
@@ -32,7 +37,12 @@ export default class FindOnePurchaseService {
                 observations: purchaseProduct.observations,
             })) ?? [],
             status: purchase.status,
-            delivery_address: purchase.delivery_address
+            delivery_address: purchase.delivery_address,
+            payment_method: {
+                installments: paymentMethod.installments,
+                method: paymentMethod.method,
+                cardBrand: paymentMethod.card_brand
+            }
         };
 
         return PurchaseResponse;
