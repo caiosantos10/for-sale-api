@@ -8,6 +8,8 @@ import paymentMethodSchema from "@modules/users/utils/paymentMethodSchema";
 const purchaseRouter = Router();
 const purchaseController = new PurchaseController();
 
+purchaseRouter.get('/', isAuthenticated, purchaseController.index)
+
 purchaseRouter.get(
     '/:id',
     celebrate({

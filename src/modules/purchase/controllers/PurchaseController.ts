@@ -4,8 +4,17 @@ import FindOnePurchaseService from '../services/FindOnePurchaseService';
 import CreatePurchaseService from '../services/CreatePurchaseService';
 import UpdatePurchaseService from '../services/UpdatePurchaseService';
 import PurchaseStatus from '../utils/purchaseStatus.enum';
+import ListPurchasesService from '../services/ListPurchasesService';
 
 export default class PurchaseController {
+    public async index(request: Request, response: Response): Promise<Response> {
+        const listPurchasesService = new ListPurchasesService();
+
+        const purchases = await listPurchasesService.execute();
+
+        return response.json(purchases);
+    }
+    
     public async show(request: Request, response: Response): Promise<Response> {
         const { id } = request.params;
         const showPurchaseService = new FindOnePurchaseService();
