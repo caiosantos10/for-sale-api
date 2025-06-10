@@ -5,13 +5,15 @@ import PaymentMethodsRepository from "../repositories/PaymentMethodsRepository";
 
 interface IRequest {
     id: string;
+    userId: string;
 }
 
 export default class FindOnePurchaseService {
-    public async execute({ id }: IRequest): Promise<PurchaseResponseDTO> {
+    public async execute({ id, userId }: IRequest): Promise<PurchaseResponseDTO> {
         const purchase = await PurchaseRepository.findOne({
-            where: { id },
+            where: { id, user: { id: userId } },
             relations: [
+                'user',
                 'purchaseProducts',
                 'purchaseProducts.product',
                 'paymentMethod',
@@ -26,7 +28,7 @@ export default class FindOnePurchaseService {
 
         const PurchaseResponse: PurchaseResponseDTO = {
             id: purchase.id,
-            user_id: purchase.user_id,
+            user_id: userId,
             products: purchase?.purchaseProducts.map(purchaseProduct => ({
                 id: purchaseProduct.product.id,
                 name: purchaseProduct.product.name,

@@ -20,8 +20,7 @@ export default class Purchase {
 
     @ManyToOne(() => Users)
     @JoinColumn({ name: 'user_id' })
-    @Column()
-    user_id: string;
+    user: Users;
 
     @Column()
     status: string;

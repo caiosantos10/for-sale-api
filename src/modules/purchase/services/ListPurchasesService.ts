@@ -2,18 +2,19 @@ import PurchaseRepository from "../repositories/PurchaseRepository";
 import { PurchaseResponseDTO } from "../utils/purchase.dto";
 
 export default class ListPurchasesService {
-    public async execute(): Promise<PurchaseResponseDTO[]> {
+    public async execute(userId: string): Promise<PurchaseResponseDTO[]> {
         const purchases = await PurchaseRepository
             .createQueryBuilder('purchase')
             .leftJoinAndSelect('purchase.purchaseProducts', 'purchaseProduct')
             .leftJoinAndSelect('purchaseProduct.product', 'product')
             .leftJoinAndSelect('purchase.paymentMethod', 'paymentMethod')
+            .where('purchase.user_id = :userId', { userId })
             .getMany();
 
         
         return purchases.map(item => ({
             id: item.id,
-            user_id: item.user_id,
+            user_id: userId,
             products: item.purchaseProducts?.map(pp => ({
                 id: pp.product.id,
                 name: pp.product.name,
