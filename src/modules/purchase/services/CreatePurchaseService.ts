@@ -5,6 +5,7 @@ import PurchaseProductsRepository from "../repositories/PurchaseProductsReposito
 import CartRepository from "@modules/cart/repositories/CartRepository";
 import { AddressDTO, PaymentMethodDTO } from "@modules/users/utils/users.dto";
 import PaymentMethodsRepository from "../repositories/PaymentMethodsRepository";
+import UsersRepository from "@modules/users/repositories/UsersRepository";
 
 interface IRequest {
     user_id: string;
@@ -18,10 +19,12 @@ export default class CreatePurchaseService {
         if (!cartExists) {
             throw new AppError('Cart not found', 404);
         }
+
+        const user = await UsersRepository.findOne({ where: { id: user_id } });
         
         const purchase = PurchaseRepository.create({
-            user_id,
             delivery_address: this.addressToString(delivery_address),
+            user: { id: user_id }
         });
         await PurchaseRepository.save(purchase);
 
@@ -57,7 +60,7 @@ export default class CreatePurchaseService {
 
         const purchaseResponse: PurchaseResponseDTO = {
             id: purchase.id,
-            user_id: purchase.user_id,
+            user_id,
             products: purchaseComplete?.purchaseProducts.map(purchaseProduct => ({
                 id: purchaseProduct.product.id,
                 name: purchaseProduct.product.name,

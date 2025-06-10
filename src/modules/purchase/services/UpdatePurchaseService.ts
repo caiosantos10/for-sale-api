@@ -6,11 +6,17 @@ import Purchase from "../entities/Purchase";
 interface IRequest {
     id: string;
     status: PurchaseStatus;
+    userId: string;
 }
 
 export default class UpdatePurchaseService {
-    public async execute({ id, status }: IRequest): Promise<Purchase> {
-        const purchase = await PurchaseRepository.findOne({ where: { id } });
+    public async execute({ id, status, userId }: IRequest): Promise<Purchase> {
+        const purchase = await PurchaseRepository.findOne({
+            where: {
+                id,
+                user: { id: userId }
+            }
+        });
 
         if (!purchase) throw new AppError('Purchase not found.');
 

@@ -8,17 +8,20 @@ import ListPurchasesService from '../services/ListPurchasesService';
 
 export default class PurchaseController {
     public async index(request: Request, response: Response): Promise<Response> {
+        const user_id = request.user.id;
+
         const listPurchasesService = new ListPurchasesService();
 
-        const purchases = await listPurchasesService.execute();
+        const purchases = await listPurchasesService.execute(user_id);
 
         return response.json(purchases);
     }
     
     public async show(request: Request, response: Response): Promise<Response> {
         const { id } = request.params;
+        const userId = request.user.id;
         const showPurchaseService = new FindOnePurchaseService();
-        const purchase = await showPurchaseService.execute({ id });
+        const purchase = await showPurchaseService.execute({ id, userId });
 
         return response.json(purchase);
     }
@@ -58,12 +61,14 @@ export default class PurchaseController {
 
             const { id } = request.params;
             const { status } = request.body;
+            const userId = request.user.id;
             
             const updatePurchaseService = new UpdatePurchaseService();
             
             const Purchase = await updatePurchaseService.execute({
                 id,
                 status,
+                userId,
             });
             
             return response.json(Purchase);
@@ -83,12 +88,14 @@ export default class PurchaseController {
         try {
 
             const { id } = request.params;
+            const userId = request.user.id;
 
             const updatePurchaseService = new UpdatePurchaseService();
 
             const Purchase = await updatePurchaseService.execute({
                 id,
                 status: PurchaseStatus.CANCELLED,
+                userId,
             });
 
             return response.json(Purchase);
