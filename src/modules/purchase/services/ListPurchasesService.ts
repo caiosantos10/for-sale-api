@@ -1,18 +1,23 @@
+import { PageList } from "@shared/interfaces/page-list.interface";
 import PurchaseRepository from "../repositories/PurchaseRepository";
 import { PurchaseResponseDTO } from "../utils/purchase.dto";
 
+const page = 1;
+const perPage = 10;
 export default class ListPurchasesService {
-    public async execute(userId: string): Promise<PurchaseResponseDTO[]> {
-        const purchases = await PurchaseRepository
+    public async execute(userId: string): Promise<PageList<PurchaseResponseDTO>> {
+        const [purchases, total] = await PurchaseRepository
             .createQueryBuilder('purchase')
             .leftJoinAndSelect('purchase.purchaseProducts', 'purchaseProduct')
             .leftJoinAndSelect('purchaseProduct.product', 'product')
             .leftJoinAndSelect('purchase.paymentMethod', 'paymentMethod')
             .where('purchase.user_id = :userId', { userId })
-            .getMany();
+            .skip((page - 1) * perPage) // <-- pula os itens das páginas anteriores
+            .take(perPage)              // <-- limita quantos itens traz
+            .getManyAndCount();         // <-- retorna os dados e o total
 
         
-        return purchases.map(item => ({
+        const purchaseList = purchases.map(item => ({
             id: item.id,
             user_id: userId,
             products: item.purchaseProducts?.map(pp => ({
@@ -33,5 +38,12 @@ export default class ListPurchasesService {
                 cardBrand: item.paymentMethod.card_brand,
             }
         }));
+
+        return {
+            data: purchaseList,
+            total,
+            page,
+            lastPage: Math.ceil(total / perPage),
+        };
     }
 }
