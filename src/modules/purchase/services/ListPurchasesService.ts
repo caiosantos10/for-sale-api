@@ -12,9 +12,9 @@ export default class ListPurchasesService {
             .leftJoinAndSelect('purchaseProduct.product', 'product')
             .leftJoinAndSelect('purchase.paymentMethod', 'paymentMethod')
             .where('purchase.user_id = :userId', { userId })
-            .skip((page - 1) * perPage) // <-- pula os itens das páginas anteriores
-            .take(perPage)              // <-- limita quantos itens traz
-            .getManyAndCount();         // <-- retorna os dados e o total
+            .skip((page - 1) * perPage)
+            .take(perPage)
+            .getManyAndCount();
 
         
         const purchaseList = purchases.map(item => ({
