@@ -8,9 +8,12 @@ import DeleteUserService from '../services/DeleteUserService';
 
 export default class UserController {
     public async index(request: Request, response: Response): Promise<Response> {
+        const page = parseInt(request.query.page as string) || 1;
+        const perPage = parseInt(request.query.perPage as string) || 10;
+        
         const listUsersService = new ListUsersService();
 
-        const users = await listUsersService.execute();
+        const users = await listUsersService.execute({ page, perPage });
 
         return response.json(users);
     }

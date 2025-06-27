@@ -7,7 +7,17 @@ import addressSchema from "../utils/addressSchema";
 const userRouter = Router();
 const userController = new UserController();
 
-userRouter.get('/', isAuthenticated, userController.index);
+userRouter.get(
+    '/',
+    celebrate({
+        [Segments.QUERY]: {
+            page: Joi.number().integer().min(1).optional(),
+            perPage: Joi.number().integer().min(1).max(100).optional(),
+        }
+    }),
+    isAuthenticated,
+    userController.index
+);
 
 userRouter.get(
     '/:id',

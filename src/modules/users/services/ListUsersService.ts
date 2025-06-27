@@ -2,11 +2,13 @@ import { PageList } from "@shared/interfaces/page-list.interface";
 import User from "../entities/Users";
 import UsersRepository from "../repositories/UsersRepository";
 
-const page = 1;
-const perPage = 10;
+interface IRequest {
+    page: number;
+    perPage: number;
+}
 
 export default class ListUsersService {
-    public async execute(): Promise<PageList<User>> {
+    public async execute({ page, perPage }: IRequest): Promise<PageList<User>> {
         const [users, total] = await UsersRepository.findAndCount({
             skip: (page - 1) * perPage,
             take: perPage,
