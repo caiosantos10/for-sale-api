@@ -1,6 +1,6 @@
 import swaggerUi from 'swagger-ui-express';
-import usersSwagger from './swagger/users.swagger';
-import productsSwagger from './swagger/products.swagger';
+import userSwagger from './swagger/user.swagger';
+import productSwagger from './swagger/product.swagger';
 import authSwagger from './swagger/auth.swagger';
 import { env } from 'process';
 import cartSwagger from './swagger/cart.swagger';
@@ -19,18 +19,24 @@ const combinedSwagger = {
       description: 'Servidor local',
     },
   ],
-  paths: {
+  _paths: {
     ...authSwagger.paths,
-    ...usersSwagger.paths,
-    ...productsSwagger.paths,
+    ...userSwagger.paths,
+    ...productSwagger.paths,
     ...cartSwagger.paths,
+  },
+  get paths() {
+    return this._paths;
+  },
+  set paths(value) {
+    this._paths = value;
   },
   components: {
     schemas: {
-      ...usersSwagger.components?.schemas,
-      ...productsSwagger.components?.schemas,
+      ...userSwagger.components?.schemas,
+      ...productSwagger.components?.schemas,
       ...cartSwagger.components?.schemas,
-      // ...authSwagger.components?.schemas,
+      ...authSwagger.components?.schemas,
     },
   },
 };
