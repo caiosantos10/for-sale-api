@@ -1,48 +1,55 @@
 const authSwagger = {
-    paths: {
-        '/sessions': {
-            post: {
-                summary: 'Cria uma sessão',
-                description: 'Cria uma sessão para autenticar o usuário.',
-                requestBody: {
-                    required: true,
-                    content: {
-                        'application/json': {
-                            schema: {
-                                type: 'object',
-                                properties: {
-                                    email: { type: 'string', description: 'Email do usuário' },
-                                    password: { type: 'string', description: 'Senha do usuário' }
-                                },
-                                example: {
-                                    email: 'admin@email.com',
-                                    password: '1234'
-                                }
-                            }
-                        }
-                    }
-                },
-                responses: {
-                    '200': {
-                        description: 'Sessão criada com sucesso',
-                        content: {
-                            'application/json': {
-                                schema: {
-                                    type: 'object',
-                                    properties: {
-                                        token: { type: 'string', description: 'Token de autenticação' }
-                                    },
-                                    example: {
-                                        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Opera\u00e7\u00f5es relacionadas a Auth"
     }
+  ],
+  "paths": {
+    "/sessions": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Login",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "email": "admin_teste2@mail.com.br",
+                "password": "123456"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sucesso"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Login": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
 };
 
 export default authSwagger;
