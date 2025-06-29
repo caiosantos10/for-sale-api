@@ -8,7 +8,17 @@ import paymentMethodSchema from "@modules/users/utils/paymentMethodSchema";
 const purchaseRouter = Router();
 const purchaseController = new PurchaseController();
 
-purchaseRouter.get('/', isAuthenticated, purchaseController.index)
+purchaseRouter.get(
+    '/',
+    celebrate({
+        [Segments.QUERY]: {
+            page: Joi.number().integer().min(1).optional(),
+            perPage: Joi.number().integer().min(1).max(100).optional(),
+        }
+    }),
+    isAuthenticated,
+    purchaseController.index
+)
 
 purchaseRouter.get(
     '/:id',

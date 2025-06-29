@@ -9,10 +9,16 @@ import ListPurchasesService from '../services/ListPurchasesService';
 export default class PurchaseController {
     public async index(request: Request, response: Response): Promise<Response> {
         const user_id = request.user.id;
+        const page = parseInt(request.query.page as string) || 1;
+        const perPage = parseInt(request.query.perPage as string) || 10;
 
         const listPurchasesService = new ListPurchasesService();
 
-        const purchases = await listPurchasesService.execute(user_id);
+        const purchases = await listPurchasesService.execute({
+            userId: user_id,
+            page,
+            perPage
+        });
 
         return response.json(purchases);
     }

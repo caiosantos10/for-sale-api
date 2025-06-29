@@ -2,10 +2,14 @@ import { PageList } from "@shared/interfaces/page-list.interface";
 import PurchaseRepository from "../repositories/PurchaseRepository";
 import { PurchaseResponseDTO } from "../utils/purchase.dto";
 
-const page = 1;
-const perPage = 10;
+interface IRequest {
+    userId: string;
+    page: number;
+    perPage: number;
+}
+
 export default class ListPurchasesService {
-    public async execute(userId: string): Promise<PageList<PurchaseResponseDTO>> {
+    public async execute({ userId, page, perPage }: IRequest): Promise<PageList<PurchaseResponseDTO>> {
         const [purchases, total] = await PurchaseRepository
             .createQueryBuilder('purchase')
             .leftJoinAndSelect('purchase.purchaseProducts', 'purchaseProduct')
