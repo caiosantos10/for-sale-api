@@ -8,9 +8,12 @@ import AppError from 'src/shared/errors/AppError';
 
 export default class ProductController {
     public async index(request: Request, response: Response): Promise<Response> {
+        const page = parseInt(request.query.page as string) || 1;
+        const perPage = parseInt(request.query.perPage as string) || 10;
+
         const listProductsService = new ListProductsService();
 
-        const products = await listProductsService.execute();
+        const products = await listProductsService.execute({ page, perPage });
 
         return response.json(products);
     }

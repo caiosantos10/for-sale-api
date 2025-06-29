@@ -12,7 +12,17 @@ const productImageController = new ProductImageController();
 
 const upload = multer(uploadConfig);
 
-productRouter.get('/', isAuthenticated, productController.index);
+productRouter.get(
+    '/',
+    celebrate({
+        [Segments.QUERY]: {
+            page: Joi.number().integer().min(1).optional(),
+            perPage: Joi.number().integer().min(1).max(100).optional(),
+        }
+    }),
+    isAuthenticated,
+    productController.index
+);
 
 productRouter.get(
     '/:id',
