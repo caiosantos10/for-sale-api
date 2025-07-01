@@ -18,6 +18,8 @@ productRouter.get(
         [Segments.QUERY]: {
             page: Joi.number().integer().min(1).optional(),
             perPage: Joi.number().integer().min(1).max(100).optional(),
+            name: Joi.string().optional(),
+            description: Joi.string().optional(),
         }
     }),
     isAuthenticated,

@@ -11,12 +11,19 @@ export default class ProductController {
         const page = parseInt(request.query.page as string) || 1;
         const perPage = parseInt(request.query.perPage as string) || 10;
 
+        const { name, description } = request.query;
+
         const listProductsService = new ListProductsService();
 
-        const products = await listProductsService.execute({ page, perPage });
+        const products = await listProductsService.execute({
+            page,
+            perPage,
+            name: name as string,
+            description: description as string,
+        });
 
         return response.json(products);
-    }
+    }      
 
     public async show(request: Request, response: Response): Promise<Response> {
         const { id } = request.params;
