@@ -13,6 +13,10 @@ userRouter.get(
         [Segments.QUERY]: {
             page: Joi.number().integer().min(1).optional(),
             perPage: Joi.number().integer().min(1).max(100).optional(),
+            name: Joi.string().optional(),
+            lastName: Joi.string().optional(),
+            email: Joi.string().email().optional(),
+            role: Joi.string().optional(),
         }
     }),
     isAuthenticated,
