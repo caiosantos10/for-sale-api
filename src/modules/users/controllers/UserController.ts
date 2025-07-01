@@ -5,15 +5,25 @@ import FindOneUserService from '../services/FindOneUserService';
 import CreateUserService from '../services/CreateUserService';
 import UpdateUserService from '../services/UpdateUserService';
 import DeleteUserService from '../services/DeleteUserService';
+import RoleEnum from '../shared/enums/Role.enum';
 
 export default class UserController {
     public async index(request: Request, response: Response): Promise<Response> {
         const page = parseInt(request.query.page as string) || 1;
         const perPage = parseInt(request.query.perPage as string) || 10;
+
+        const { name, lastName, email, role } = request.query;
         
         const listUsersService = new ListUsersService();
 
-        const users = await listUsersService.execute({ page, perPage });
+        const users = await listUsersService.execute({
+            page,
+            perPage,
+            name: name as string,
+            lastName: lastName as string,
+            email: email as string,
+            role: role as RoleEnum,
+        });
 
         return response.json(users);
     }
