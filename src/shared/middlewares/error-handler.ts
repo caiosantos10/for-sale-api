@@ -33,6 +33,8 @@ const errorHandler = (
         });
     }
 
+    console.error(error);
+
     return response.status(500).json({
         status: 500,
         message: 'Internal Server Error.',
