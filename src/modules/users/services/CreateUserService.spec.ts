@@ -6,7 +6,7 @@ import RoleEnum from '../shared/enums/Role.enum';
 
 // Mocks
 jest.mock('@config/typeorm', () => {
-    // Crie um objeto que simule o repositório
+    // Simulando o repositório
     const mockRepo = {
         findByEmail: jest.fn(),
         create: jest.fn(),
