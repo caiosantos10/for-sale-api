@@ -1,4 +1,4 @@
-import AppError from "src/shared/errors/AppError";
+import AppError from '@shared/errors/AppError';
 import User from "../entities/Users";
 import UsersRepository from "../repositories/UsersRepository";
 import RoleEnum from "../shared/enums/Role.enum";
