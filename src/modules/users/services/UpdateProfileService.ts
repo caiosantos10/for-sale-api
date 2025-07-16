@@ -1,4 +1,4 @@
-import AppError from "src/shared/errors/AppError";
+import AppError from "@shared/errors/AppError";
 import UsersRepository from "../repositories/UsersRepository";
 import User from "../entities/Users";
 import { compare, hash } from "bcryptjs";
@@ -21,16 +21,19 @@ export default class UpdateProfileService {
     }: IRequest): Promise<User> {
         const user = await UsersRepository.findOne({ where: { id } });
         
-        if (!user) throw new AppError('User not found.', 400);
+        if (!user) {
+            throw new AppError('User not found.', 400);
+        }
         
         const userByEmail = await UsersRepository.findByEmail(email);
 
-        if (!userByEmail) throw new AppError('User not found.', 400);
+        if (!userByEmail) {
+            throw new AppError('User not found.', 400);
+        }
 
         /** Caso encontre usuário... */
 
         if (userByEmail && (userByEmail.id !== id)) {
-            console.log(userByEmail, user, id, name)
             throw new AppError('There already one user with this email.', 400);
         }
 
@@ -41,7 +44,9 @@ export default class UpdateProfileService {
         if (old_password && new_password) {
             const checkPassword = await compare(old_password, user.password);
 
-            if (!checkPassword) throw new AppError('Old password does not match.', 400);
+            if (!checkPassword) {
+                throw new AppError('Old password does not match.', 400);
+            }
 
             user.password = await hash(new_password, 8);
         }
