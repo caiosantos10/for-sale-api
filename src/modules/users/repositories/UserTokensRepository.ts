@@ -1,4 +1,4 @@
-import { AppDataSource } from "src/config/typeorm"
+import { AppDataSource } from "@config/typeorm"
 import UserTokens from "../entities/UserTokens";
 
 const UserTokensRepository = AppDataSource.getRepository(UserTokens).extend({
