@@ -1,4 +1,4 @@
-import { AppDataSource } from "src/config/typeorm"
+import { AppDataSource } from "@config/typeorm"
 import Product from "../entities/Product"
 
 const ProductRepository = AppDataSource.getRepository(Product).extend({
