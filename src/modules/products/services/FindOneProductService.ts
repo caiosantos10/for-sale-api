@@ -1,4 +1,4 @@
-import AppError from "src/shared/errors/AppError";
+import AppError from "@shared/errors/AppError";
 import Product from "../entities/Product";
 import ProductRepository from "../repositories/ProductRepository";
 

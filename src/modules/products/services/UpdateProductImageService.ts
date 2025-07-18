@@ -1,9 +1,9 @@
-import AppError from "src/shared/errors/AppError";
+import AppError from "@shared/errors/AppError";
 import ProductRepository from "../repositories/ProductRepository";
 import path from 'path';
 import uploadConfig from '@config/upload';
-import fs from 'fs';
 import Product from "../entities/Product";
+import { fileExists, removeFile } from "@shared/utils/file-utils";
 
 interface IRequest {
     productId: string;
@@ -20,11 +20,11 @@ export default class UpdateProductImageService {
             const filePath = path.join(uploadConfig.directory, product.image);
             
             // Verifica se arquivo existe
-            const imageExists = await fs.promises.stat(filePath);
+            const imageExists = await fileExists(filePath);
 
             // Caso arquivo exista, apaga-o
             if (imageExists) {
-                await fs.promises.unlink(filePath)
+                await removeFile(filePath)
             }
         }   
 

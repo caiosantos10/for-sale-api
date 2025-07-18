@@ -1,5 +1,4 @@
-import AppError from "src/shared/errors/AppError";
-import Product from "../entities/Product";
+import AppError from "@shared/errors/AppError";
 import ProductRepository from "../repositories/ProductRepository";
 
 interface IRequest {
