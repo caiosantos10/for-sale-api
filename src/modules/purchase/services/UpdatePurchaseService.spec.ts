@@ -1,19 +1,6 @@
 import UpdatePurchaseService from './UpdatePurchaseService';
 import AppError from '@shared/errors/AppError';
 
-// // Mock do enum com os valores que você passou
-// jest.mock('../utils/purchaseStatus.enum', () => {
-//     const PurchaseStatus = {
-//         CREATED: 'CREATED',
-//         GETTING_READY: 'GETTING_READY',
-//         OUT_FOR_DELIVERY: 'OUT_FOR_DELIVERY',
-//         DELIVERED: 'DELIVERED',
-//         CANCELLED: 'CANCELLED',
-//     };
-//     return { ...PurchaseStatus, default: PurchaseStatus };
-// });
-
-// Mock do PurchaseRepository
 jest.mock('../repositories/PurchaseRepository', () => {
     const mock = {
         findOne: jest.fn(),
