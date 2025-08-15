@@ -1,4 +1,4 @@
-import AppError from "src/shared/errors/AppError";
+import AppError from "@shared/errors/AppError";
 import PurchaseRepository from "../repositories/PurchaseRepository";
 import { PurchaseResponseDTO } from "../utils/purchase.dto";
 import PaymentMethodsRepository from "../repositories/PaymentMethodsRepository";
