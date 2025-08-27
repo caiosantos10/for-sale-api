@@ -2,16 +2,17 @@ import AppError from "@shared/errors/AppError";
 import { CartResponseDTO } from "../utils/cart.dto";
 import { ICartRepository } from "@shared/interfaces/repositories.interface";
 import CartProducts from "../entities/CartProducts";
+import CartRepository from "../repositories/CartRepository";
 
 interface IRequest {
     user_id: string;
 }
 
 export default class GetByUserCartService {
-    constructor(private cartRepository: ICartRepository) { }
+    constructor() { }
 
     public async execute({ user_id }: IRequest): Promise<CartResponseDTO> {
-        const cart = await this.cartRepository.findOne({
+        const cart = await CartRepository.findOne({
             where: { user_id },
             relations: ['cartProducts', 'cartProducts.product'],
         });
