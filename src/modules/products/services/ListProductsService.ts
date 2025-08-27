@@ -10,7 +10,6 @@ interface IRequest {
 }
 
 export default class ListProductsService {
-    // Ajustar tipagem do retorno para interface que tenha objeto e elementos da paginação
     public async execute({ page, perPage, name, description }: IRequest): Promise<PageList<Product>> {
         const query = ProductRepository.createQueryBuilder("product");
         if (name) {
