@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import Merchant from "@modules/merchants/entities/Merchant";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity('Products')
 export default class Product {
@@ -22,4 +23,11 @@ export default class Product {
 
     @UpdateDateColumn()
     updated_at: Date;
+
+    @Column({ name: "merchant_id", type: "uuid" })
+    merchantId: string;
+
+    @ManyToOne(() => Merchant, (c) => c.products, { onDelete: "CASCADE" })
+    @JoinColumn({ name: "merchant_id" })
+    merchant: Merchant;
 }
