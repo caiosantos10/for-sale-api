@@ -1,20 +1,21 @@
 import AppError from "@shared/errors/AppError";
 import { ICartRepository } from "@shared/interfaces/repositories.interface";
+import CartRepository from "../repositories/CartRepository";
 
 interface IRequest {
     id: string;
 }
 
 export default class DeleteCartService {
-    constructor(private cartRepository: ICartRepository) { }
+    constructor() { }
 
     public async execute({ id }: IRequest): Promise<void> {
-        const cart = await this.cartRepository.findOne({ where: { id } });
+        const cart = await CartRepository.findOne({ where: { id } });
 
         if (!cart) {
             throw new AppError('Cart not found.');
         }
 
-        await this.cartRepository.remove(cart);
+        await CartRepository.remove(cart);
     }
 }

@@ -3,6 +3,9 @@ import { ICartRepository, ICartProductsRepository, IProductRepository } from "@s
 import { In } from "typeorm";
 import { CartResponseDTO } from "../utils/cart.dto";
 import CartProducts from "../entities/CartProducts";
+import CartRepository from "../repositories/CartRepository";
+import CartProductsRepository from "../repositories/CartProductsRepository";
+import ProductRepository from "@modules/products/repositories/ProductRepository";
 
 interface ProductsDTO {
     id: string;
@@ -17,27 +20,27 @@ interface IRequest {
 
 export default class UpdateCartService {
     constructor(
-        private cartRepository: ICartRepository,
-        private cartProductsRepository: ICartProductsRepository,
-        private productRepository: IProductRepository
+        // private cartRepository: ICartRepository,
+        // private cartProductsRepository: ICartProductsRepository,
+        // private productRepository: IProductRepository
     ) { }
 
     public async execute({ cart_id, products }: IRequest): Promise<CartResponseDTO> {
         const product_ids = products.map(product => product.id);
-        const cart = await this.cartRepository.findOne({ where: { id: cart_id } });
+        const cart = await CartRepository.findOne({ where: { id: cart_id } });
 
         if (!cart) throw new AppError('Cart not found.');
 
-        const itemsToRemove = await this.cartProductsRepository.findBy({ cart_id });
-        await this.cartProductsRepository.remove(itemsToRemove);
+        const itemsToRemove = await CartProductsRepository.findBy({ cart_id });
+        await CartProductsRepository.remove(itemsToRemove);
 
-        const foundedProducts = await this.productRepository.findBy({ id: In(product_ids) });
+        const foundedProducts = await ProductRepository.findBy({ id: In(product_ids) });
         if (foundedProducts.length !== product_ids.length) {
             throw new Error('One or more products not found');
         }
 
         const itemsToAdd = foundedProducts.map((product: ProductsDTO, index: number) =>
-            this.cartProductsRepository.create({
+            CartProductsRepository.create({
                 cart_id: cart.id,
                 product_id: product.id,
                 quantity: products[index].quantity,
@@ -45,10 +48,10 @@ export default class UpdateCartService {
             })
         );
 
-        await this.cartProductsRepository.save(itemsToAdd);
-        await this.cartRepository.save(cart);
+        await CartProductsRepository.save(itemsToAdd);
+        await CartRepository.save(cart);
 
-        const cartComplete = await this.cartRepository.findOne({
+        const cartComplete = await CartRepository.findOne({
             where: { id: cart.id },
             relations: ['cartProducts', 'cartProducts.product'],
         });

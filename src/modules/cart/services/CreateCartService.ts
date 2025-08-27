@@ -8,6 +8,9 @@ import {
     ICartRepository,
     IProductRepository
 } from "@shared/interfaces/repositories.interface";
+import CartRepository from "../repositories/CartRepository";
+import ProductRepository from "@modules/products/repositories/ProductRepository";
+import CartProductsRepository from "../repositories/CartProductsRepository";
 
 interface IRequest {
     user_id: string;
@@ -16,10 +19,10 @@ interface IRequest {
 
 export default class CreateCartService {
     constructor(
-        private cartRepository: ICartRepository,
-        private productRepository: IProductRepository,
-        private cartProductsRepository: ICartProductsRepository,
-        private updateCartService: UpdateCartService
+        // private cartRepository: ICartRepository,
+        // private productRepository: IProductRepository,
+        // private cartProductsRepository: ICartProductsRepository,
+        // private updateCartService: UpdateCartService
     ) { }
 
     public async execute({ user_id, products }: IRequest): Promise<CartResponseDTO> {
@@ -30,17 +33,19 @@ export default class CreateCartService {
 
         let cartResponse: CartResponseDTO;
 
-        const cartAlreadyExists = await this.cartRepository.findOne({ where: { user_id } });
+        const cartAlreadyExists = await CartRepository.findOne({ where: { user_id } });
+        /** Caso já exista, não cria, mas atualiza */
         if (cartAlreadyExists) {
-            cartResponse = await this.updateCartService.execute({
+            const updateCartService = new UpdateCartService();
+            cartResponse = await updateCartService.execute({
                 cart_id: cartAlreadyExists.id,
                 products,
             });
         } else {
-            const cart = this.cartRepository.create({ user_id });
-            await this.cartRepository.save(cart);
+            const cart = CartRepository.create({ user_id });
+            await CartRepository.save(cart);
 
-            const foundedProducts = await this.productRepository.findBy({
+            const foundedProducts = await ProductRepository.findBy({
                 id: In(product_ids),
             });
 
@@ -49,7 +54,7 @@ export default class CreateCartService {
             }
 
             const cartProducts = foundedProducts.map((product: ProductsRequestDTO, index: number) =>
-                this.cartProductsRepository.create({
+                CartProductsRepository.create({
                     cart_id: cart.id,
                     product_id: product.id,
                     quantity: products[index].quantity,
@@ -57,9 +62,9 @@ export default class CreateCartService {
                 })
             );
 
-            await this.cartProductsRepository.save(cartProducts);
+            await CartProductsRepository.save(cartProducts);
 
-            const cartComplete = await this.cartRepository.findOne({
+            const cartComplete = await CartRepository.findOne({
                 where: { id: cart.id },
                 relations: ['cartProducts', 'cartProducts.product'],
             });
