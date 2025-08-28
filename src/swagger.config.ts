@@ -4,6 +4,7 @@ import productSwagger from './swagger/product.swagger';
 import authSwagger from './swagger/auth.swagger';
 import { env } from 'process';
 import cartSwagger from './swagger/cart.swagger';
+import merchantSwagger from './swagger/merchant.swagger';
 
 // Combina as especificações
 const combinedSwagger = {
@@ -24,6 +25,7 @@ const combinedSwagger = {
     ...userSwagger.paths,
     ...productSwagger.paths,
     ...cartSwagger.paths,
+    ...merchantSwagger.paths
   },
   get paths() {
     return this._paths;
@@ -37,6 +39,7 @@ const combinedSwagger = {
       ...productSwagger.components?.schemas,
       ...cartSwagger.components?.schemas,
       ...authSwagger.components?.schemas,
+      ...merchantSwagger.components?.schemas,
     },
   },
 };
