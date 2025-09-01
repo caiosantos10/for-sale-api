@@ -1,6 +1,5 @@
 import AppError from "@shared/errors/AppError";
 import { CartResponseDTO } from "../utils/cart.dto";
-import { ICartRepository } from "@shared/interfaces/repositories.interface";
 import CartProducts from "../entities/CartProducts";
 import CartRepository from "../repositories/CartRepository";
 
