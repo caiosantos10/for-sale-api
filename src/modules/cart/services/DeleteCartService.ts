@@ -1,5 +1,4 @@
 import AppError from "@shared/errors/AppError";
-import { ICartRepository } from "@shared/interfaces/repositories.interface";
 import CartRepository from "../repositories/CartRepository";
 
 interface IRequest {
