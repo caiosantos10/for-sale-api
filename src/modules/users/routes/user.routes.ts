@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { celebrate, Joi, Segments } from 'celebrate';
 import UserController from "../controllers/UserController";
+import RoleEnum from "../shared/enums/Role.enum";
 import isAuthenticated from "@shared/middlewares/isAuthenticated";
 import addressSchema from "../utils/addressSchema";
 
@@ -16,7 +17,9 @@ userRouter.get(
             name: Joi.string().optional(),
             lastName: Joi.string().optional(),
             email: Joi.string().email().optional(),
-            role: Joi.string().optional(),
+            role: Joi.string()
+                .valid(RoleEnum.Admin, RoleEnum.Customer)
+                .optional(),
         }
     }),
     isAuthenticated,
@@ -42,7 +45,9 @@ userRouter.post(
             lastName: Joi.string().required(),
             email: Joi.string().email().required(),
             password: Joi.string().required(),
-            role: Joi.string().required(),
+            role: Joi.string()
+                .valid(RoleEnum.Admin, RoleEnum.Customer)
+                .required(),
         }
     }),
     userController.create,
@@ -59,7 +64,9 @@ userRouter.put(
             lastName: Joi.string().required(),
             email: Joi.string().email().required(),
             password: Joi.string().required(),
-            role: Joi.string().required(),
+            role: Joi.string()
+                .valid(RoleEnum.Admin, RoleEnum.Customer)
+                .required(),
             addresses: Joi.array().items(addressSchema),
         }
     }),
